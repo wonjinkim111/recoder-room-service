@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- xml -->
+
+<mapper namespace="com.yaas.recoderroomservice.repository.IRoomMapper">
+
+    <!-- -->
+    <insert id="createRoom" parameterType="com.yaas.recoderroomservice.entity.Rooms">
+        insert into room_tb(room_id, mentor_id, room_name, room_info, room_is_private, room_picture, room_max, reg_date)
+               values(#{roomId}, #{mentorId}, #{roomName}, #{roomInfo}, #{roomIsPrivate}, #{roomPicture}, #{roomMax}, DATE_FORMAT(SYSDATE(), '%Y/%m/%d %H:%i:%s'))
+    </insert>
+
+    <!-- -->
+    <insert id="insertRoomPicture" parameterType="com.yaas.recoderroomservice.dto.PictureDto">
+        INSERT INTO roomPicture_tb (roomPicture_id, room_id, room_picture)
+        VALUES (#{roomPictureId}, #{roomId}, #{roomPicture})
+    </insert>
+
+    <!-- -->
+    <update id="updateRoomInfo" parameterType="com.yaas.recoderroomservice.entity.Rooms">
+        update room_tb set room_name=#{roomName}, room_info=#{roomInfo}, room_max=#{roomMax}, room_picture=#{roomPicture}
+        where room_id=#{roomId}
+    </update>
+
+    <!-- -->
+    <delete id="deleteRoom" parameterType="long">
+        delete from room_tb where room_id=#{roomId}
+    </delete>
+
+</mapper>

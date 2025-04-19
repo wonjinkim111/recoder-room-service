@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- xml -->
+
+<mapper namespace="com.yaas.recoderroomservice.repository.IRoomMapper">
+
+    <!-- -->
+    <select id="findByRoomName" resultType="com.yaas.recoderroomservice.entity.Rooms" parameterType="string">
+
+    </select>
+
+    <resultMap id="mentorRoomList" type="com.yaas.recoderroomservice.dto.MentorRoomDto">
+        <id property="roomId" column="room_id"/>
+        <result property="mentorId" column="mentor_id"/>
+        <result property="roomName" column="room_name"/>
+        <result property="roomMax" column="room_max"/>
+
+        <collection property="mentees" ofType="com.yaas.recoderroomservice.dto.MenteeInfoDto">
+            <result property="menteeId" column="mentee_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="getRoomByMentorId" resultMap="mentorRoomList" parameterType="long">
+        select room_id,
+               mentor_id,
+               room_name,
+               room_max
+        from room_tb
+        where mentor_id=#{mentorId}
+    </select>
+
+    <!-- -->
+    <select id="getRoomByRoomId" resultType="com.yaas.recoderroomservice.entity.Rooms" parameterType="long">
+        select room_id as roomId,
+               mentor_id as mentorId,
+               room_name as roomName,
+               room_is_private as roomIsPrivate,
+               room_info as roomInfo,
+               room_max as roomMax,
+               room_picture as roomPicture
+        from room_tb
+        where room_id=#{roomId}
+    </select>
+
+    <!-- -->
+    <select id="getAllRooms" resultType="com.yaas.recoderroomservice.entity.Rooms">
+        select room_id as roomId,
+               mentor_id as mentorId,
+               room_name as roomName,
+               room_is_private as roomIsPrivate,
+               room_info as roomInfo,
+               room_max as roomMax,
+               room_picture as roomPicture,
+               reg_date as regDate
+        from room_tb
+    </select>
+
+
+</mapper>
