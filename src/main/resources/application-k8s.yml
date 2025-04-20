@@ -23,14 +23,22 @@ spring:
   cloud:
     kubernetes:
       discovery:
+        enabled: true       # 이 부분 추가
         all-namespaces: true
 
-  # file upload
   servlet:
     multipart:
       enabled: true
       max-file-size: 200MB
       max-request-size: 215MB
+
+feign:
+  hystrix:
+    enabled: false         # 이 부분 추가
+
+ribbon:
+  ReadTimeout: 6000        # 기존 값보다 더 현실적인 timeout 설정
+  ConnectTimeout: 6000
 
 file:
   upload-dir: /usr/recoder-img
@@ -38,10 +46,6 @@ file:
 mybatis:
   type-aliases-package: com.yaas.recoderroomservice.entity
   mapper-locations: mapper/**/*.xml
-
-ribbon:
-  ReadTimeout: 60000
-  ConnectTimeout: 60000
 
 token:
   expiration_time: 86400000
