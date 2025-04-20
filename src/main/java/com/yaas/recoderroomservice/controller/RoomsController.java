@@ -75,22 +75,35 @@ public class RoomsController implements ApplicationContextAware {
     }
 
     @PostMapping({"/{mentorId}"})
-    public ResponseEntity<CreateRoomResponseModel> createRoom(@ModelAttribute Rooms room, @PathVariable long mentorId, @RequestParam(value = "file", required = false) MultipartFile file) {
+    public ResponseEntity<CreateRoomResponseModel> createRoom(
+            @ModelAttribute Rooms room,
+            @PathVariable long mentorId,
+            @RequestParam(value = "file", required = false) MultipartFile file) {
+
         log.info("createRoom controller 왔다!!!!!!!!!!!!!!");
-        this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        RoomsDto roomsDto = (RoomsDto)this.modelMapper.map(room, RoomsDto.class);
-        roomsDto.setMentorId(mentorId);
+
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        // ModelMapper로 DTO 변환 후 mentorId를 수동 세팅
+        RoomsDto roomsDto = modelMapper.map(room, RoomsDto.class);
+        roomsDto.setMentorId(mentorId);  // 여기만 수동으로 설정
+
         if (file != null) {
-            String fileName = this.fileUploadService.uploadFile(file);
-            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/usr/recoder-img/").path(fileName).toUriString();
+            String fileName = fileUploadService.uploadFile(file);
+            String fileDownloadUri = ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/usr/recoder-img/")
+                    .path(fileName)
+                    .toUriString();
             roomsDto.setRoomPicture(fileDownloadUri);
         } else {
             roomsDto.setDtoRoomPicture(null);
         }
-        log.info(roomsDto.getRoomPicture());
-        RoomsDto createDto = this.service.createRoom(roomsDto);
-        CreateRoomResponseModel returnValue = (CreateRoomResponseModel)this.modelMapper.map(createDto, CreateRoomResponseModel.class);
+
+        RoomsDto createDto = service.createRoom(roomsDto);
+        CreateRoomResponseModel returnValue = modelMapper.map(createDto, CreateRoomResponseModel.class);
         returnValue.setRoomId(createDto.getRoomId());
+
         return ResponseEntity.status(HttpStatus.CREATED).body(returnValue);
     }
 
