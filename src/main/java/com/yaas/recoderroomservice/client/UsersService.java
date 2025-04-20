@@ -6,7 +6,7 @@
 	import org.springframework.web.bind.annotation.RequestParam;
 	
 	@FeignClient(
-	        url = "http://localhost:10000",
+	        //url = "http://localhost:10000",
 	        name = "users-service"
 	)
 	public interface UsersService {
