@@ -149,17 +149,23 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <exclusions>
+        			<exclusion>
+            			<groupId>org.springframework.cloud</groupId>
+            			<artifactId>spring-cloud-netflix-ribbon</artifactId>
+        			</exclusion>
+        			<exclusion>
+            			<groupId>com.netflix.ribbon</groupId>
+            			<artifactId>ribbon</artifactId>
+        			</exclusion>
+        			<exclusion>
+            			<groupId>com.netflix.netflix-commons</groupId>
+            			<artifactId>netflix-commons-util</artifactId>
+        			</exclusion>
+    			</exclusions>
         </dependency>
 
-        <!-- eureka feign https://mvnrepository.com/artifact/com.netflix.ribbon/ribbon -->
-        <dependency>
-            <groupId>com.netflix.ribbon</groupId>
-            <artifactId>ribbon</artifactId>
-            <version>2.7.18</version>
-            <scope>runtime</scope>
-        </dependency>
-
-<!-- ✅ 추가 -->
+		<!--  추가 -->
 		<dependency>
     		<groupId>org.springframework.cloud</groupId>
     		<artifactId>spring-cloud-starter-loadbalancer</artifactId>
