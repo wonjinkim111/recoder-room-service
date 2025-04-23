@@ -23,8 +23,11 @@ spring:
   cloud:
     kubernetes:
       discovery:
-        enabled: true       # 이 부분 추가
+        enabled: true
         all-namespaces: true
+    loadbalancer:
+      ribbon:
+        enabled: false
 
   servlet:
     multipart:
@@ -34,11 +37,7 @@ spring:
 
 feign:
   hystrix:
-    enabled: false         # 이 부분 추가
-
-ribbon:
-  ReadTimeout: 6000        # 기존 값보다 더 현실적인 timeout 설정
-  ConnectTimeout: 6000
+    enabled: false
 
 file:
   upload-dir: /usr/recoder-img
