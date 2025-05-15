@@ -55,3 +55,14 @@ authorization:
     header:
       name: Authorization
       prefix: Bearer
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+  security:
+    enabled: false
