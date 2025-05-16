@@ -177,6 +177,7 @@
             <artifactId>spring-cloud-starter-kubernetes</artifactId>
             <version>0.3.0.RELEASE</version>
         </dependency>
+
 	</dependencies>
 	
 	    <dependencyManagement>
