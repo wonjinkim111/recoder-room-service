@@ -5,10 +5,8 @@
 	import org.springframework.web.bind.annotation.GetMapping;
 	import org.springframework.web.bind.annotation.RequestParam;
 	
-	@FeignClient(
-	        name = "users-service"
-	)
+	@FeignClient(url = "http://users-service:10000", name = "users-service")
 	public interface UsersService {
 	    @GetMapping({"/users/mentor/nickname"})
-	    UmentorNicknameModel getMentorNickname(@RequestParam("mentorId") long mentorId);
+	    UmentorNicknameModel getMentorNickname(@RequestParam long paramLong);
 	}

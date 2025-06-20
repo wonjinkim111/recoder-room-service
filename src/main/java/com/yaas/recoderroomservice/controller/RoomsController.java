@@ -53,7 +53,7 @@ public class RoomsController implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = (WebApplicationContext)applicationContext;
         this.roomUpload = this.context.getServletContext().getRealPath("recoder-img");
-        log.info(String.format(": %s", new Object[] { this.roomUpload }));
+        log.info(String.format("업로드디렉토리 이름 : %s", new Object[] { this.roomUpload }));
     }
 
     ModelMapper modelMapper = new ModelMapper();
@@ -75,35 +75,22 @@ public class RoomsController implements ApplicationContextAware {
     }
 
     @PostMapping({"/{mentorId}"})
-    public ResponseEntity<CreateRoomResponseModel> createRoom(
-            @ModelAttribute Rooms room,
-            @PathVariable long mentorId,
-            @RequestParam(value = "file", required = false) MultipartFile file) {
-
+    public ResponseEntity<CreateRoomResponseModel> createRoom(@ModelAttribute Rooms room, @PathVariable long mentorId, @RequestParam(value = "file", required = false) MultipartFile file) {
         log.info("createRoom controller 왔다!!!!!!!!!!!!!!");
-
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
-        // ModelMapper로 DTO 변환 후 mentorId를 수동 세팅
-        RoomsDto roomsDto = modelMapper.map(room, RoomsDto.class);
-        roomsDto.setMentorId(mentorId);  // 여기만 수동으로 설정
-
+        this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        RoomsDto roomsDto = (RoomsDto)this.modelMapper.map(room, RoomsDto.class);
+        roomsDto.setMentorId(mentorId);
         if (file != null) {
-            String fileName = fileUploadService.uploadFile(file);
-            String fileDownloadUri = ServletUriComponentsBuilder
-                    .fromCurrentContextPath()
-                    .path("/usr/recoder-img/")
-                    .path(fileName)
-                    .toUriString();
+            String fileName = this.fileUploadService.uploadFile(file);
+            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/usr/recoder-img/").path(fileName).toUriString();
             roomsDto.setRoomPicture(fileDownloadUri);
         } else {
             roomsDto.setDtoRoomPicture(null);
         }
-
-        RoomsDto createDto = service.createRoom(roomsDto);
-        CreateRoomResponseModel returnValue = modelMapper.map(createDto, CreateRoomResponseModel.class);
+        log.info(roomsDto.getRoomPicture());
+        RoomsDto createDto = this.service.createRoom(roomsDto);
+        CreateRoomResponseModel returnValue = (CreateRoomResponseModel)this.modelMapper.map(createDto, CreateRoomResponseModel.class);
         returnValue.setRoomId(createDto.getRoomId());
-
         return ResponseEntity.status(HttpStatus.CREATED).body(returnValue);
     }
 
