@@ -8,5 +8,5 @@
 	@FeignClient(url = "http://localhost:10000", name = "users-service")
 	public interface UsersService {
 	    @GetMapping({"/users/mentor/nickname"})
-	    UmentorNicknameModel getMentorNickname(@RequestParam long paramLong);
+	    UmentorNicknameModel getMentorNickname(@RequestParam("mentorId") long mentorId);
 	}
