@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class RoomsDto {
     private long roomId;
 
-    private long mentorId;
+    private Long mentorId;
 
     private String roomName;
 
@@ -136,7 +136,7 @@ public class RoomsDto {
         return this.roomId;
     }
 
-    public long getMentorId() {
+    public Long getMentorId() {
         return this.mentorId;
     }
 

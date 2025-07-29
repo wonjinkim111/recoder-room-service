@@ -7,7 +7,7 @@ import java.util.List;
 public class Rooms {
     private long roomId;
 
-    private long mentorId;
+    private Long mentorId;
 
     private String roomName;
 
@@ -151,7 +151,7 @@ public class Rooms {
         return this.roomId;
     }
 
-    public long getMentorId() {
+    public Long getMentorId() {
         return this.mentorId;
     }
 

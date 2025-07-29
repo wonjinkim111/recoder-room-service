@@ -71,13 +71,28 @@ public class RoomsServiceImpl implements IRoomsService {
         List<Rooms> getAllRooms = this.mapper.getAllRooms();
         System.out.println("getAllRooms 서비스!");
         if (getAllRooms == null) {
-            log.info(String.format("not exists rooms", new Object[0]));
+        	log.info("not exists rooms");
             return new ArrayList<>();
         }
         log.info("유저 >>> Before calling users microservice");
+        
         for(int i = 0; i < getAllRooms.size(); i++) {
-            UmentorNicknameModel umentorNicknameModel = this.usersService.getMentorNickname(((Rooms)getAllRooms.get(i)).getMentorId());
-            ((Rooms)getAllRooms.get(i)).setMentorNickname(umentorNicknameModel.getMentorNickname());
+        	Rooms room = getAllRooms.get(i);
+        	if (room == null) {
+        		log.warn("Room is null at index {}", i);
+        		continue;
+        	}
+        	
+        	try {
+        		UmentorNicknameModel umentorNicknameModel = this.usersService.getMentorNickname(room.getMentorId());
+        		if (umentorNicknameModel != null && umentorNicknameModel.getMentorNickname() != null) {
+        			room.setMentorNickname(umentorNicknameModel.getMentorNickname());
+        		} else {
+        			log.warn("nickname response is null for mentorId={}", room.getMentorId());
+        		}
+        	} catch (Exception e) {
+        		log.error("usersService 호출 실패: mentorId=" + room.getMentorId(), e);
+        	}
         }
         log.info("유저 >>> After calling users microservice");
         return getAllRooms;
