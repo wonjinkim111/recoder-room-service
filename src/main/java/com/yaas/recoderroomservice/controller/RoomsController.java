@@ -95,7 +95,7 @@ public class RoomsController implements ApplicationContextAware {
     }
 
     @DeleteMapping({"/{roomId}"})
-    public ResponseEntity<ResultResponseModel> deleteUser(@PathVariable long roomId) {
+    public ResponseEntity<ResultResponseModel> deleteUser(@RequestParam long roomId) {
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         long deleteResult = this.service.deleteRoom(roomId);
         ResultResponseModel sReturnValue = (ResultResponseModel)this.modelMapper.map(Long.valueOf(roomId), ResultResponseModel.class);
@@ -113,7 +113,7 @@ public class RoomsController implements ApplicationContextAware {
 
     @GetMapping({"/mentor/{mentorId}"})
     @ResponseBody
-    public List<MentorRoomDto> getRoomByMentorId(@PathVariable long mentorId) {
+    public List<MentorRoomDto> getRoomByMentorId(@RequestParam long mentorId) {
         List<MentorRoomDto> returnValue = new ArrayList<>();
         List<MentorRoomDto> mentorRoom = this.service.getRoomByMentorId(mentorId);
         if (mentorRoom == null || mentorRoom.isEmpty())
@@ -127,7 +127,7 @@ public class RoomsController implements ApplicationContextAware {
 
     @GetMapping({"/{roomId}"})
     @ResponseBody
-    public RoomsDto getRoomByRoomId(@PathVariable long roomId) {
+    public RoomsDto getRoomByRoomId(@RequestParam long roomId) {
         RoomsDto roomInfo = this.service.getRoomByRoomId(roomId);
         return roomInfo;
     }
